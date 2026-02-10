@@ -1,0 +1,16 @@
+{% extends "dashboard.html" %}
+{% block title %}Авторизация | AvitOff{% endblock %}
+
+{% block content %}
+<body>
+    <div class="start-container">
+        <h1>Авторизация</h1>
+        <form id="loginForm" method="post" action="/login/">
+            <input class="input" id="email" type="email" name="email" placeholder="email" required>
+            <input class="input" id="password" type="password" name="password" placeholder="password" required>
+            <button class="btn btn-primary" type="submit">Войти</button>
+        </form>
+    </div>
+    </script>
+</body>
+{% endblock %}

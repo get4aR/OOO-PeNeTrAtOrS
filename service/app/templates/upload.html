@@ -1,0 +1,17 @@
+{% extends "dashboard.html" %}
+{% block title %}Подать объявление | AvitOff{% endblock %}
+
+{% block content %}
+<body>
+    <div class="start-container">
+        <h1>Подать объявление</h1>
+        <form id="uploadForm" method="post" action="/upload/">
+            <input class="input" id="header" name="header" placeholder="Заголовок" required>
+            <input class="input" id="description" name="description" placeholder="Описание" required>
+            <input class="input" id="price" name="price" placeholder="Цена" required>
+            <button class="btn btn-primary" type="submit">Подать</button>
+        </form>
+    </div>
+    </script>
+</body>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "dashboard.html" %}
+{% block title %}Регистрация | AvitOff{% endblock %}
+
+{% block content %}
+<body>
+    <div class="start-container">
+        <h1>Регистрация</h1>
+        <form method="post" action="/register/">
+            <input class="input" type="nickname" name="nickname" placeholder="nickname" required>
+            <input class="input" type="email" name="email" placeholder="email" required>
+            <input class="input" type="phone" name="phone" pattern="[\+]7\d{10}" title="+7XXXXXXXXXX" placeholder="phone" required>
+            <input class="input" type="password" name="password" placeholder="password" required>
+            <button class="btn btn-primary">Зарегистрироваться</button>
+        </form>
+    </div>
+</body>
+{% endblock %}

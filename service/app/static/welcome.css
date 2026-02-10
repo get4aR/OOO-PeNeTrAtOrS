@@ -1,0 +1,91 @@
+.page-container .subtitle {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.page-container .register-btn {
+  background-color: #e60023;
+  color: white;
+  font-size: 16px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.page-container .register-btn:hover {
+  background-color: #c4001f;
+}
+
+.page-container .features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.page-container .feature-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px 24px;
+  flex: 1 1 280px;
+  max-width: 320px;
+  text-align: center;
+}
+
+.page-container .feature-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.page-container .feature-card p {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  margin-top: 100px;
+}
+
+.page-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+.page-header .subtitle {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+.page-header .register-btn {
+  background-color: #e60023;
+  color: white;
+  font-size: 16px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.page-header .register-btn:hover {
+  background-color: #c4001f;
+}

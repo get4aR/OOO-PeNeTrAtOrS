@@ -1,0 +1,19 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Объявление | AvitOff{% endblock %}
+
+{% block content %}
+<body>
+    <div class="start-container">
+        <h1>{{ ad.header }}</h1>
+        <p><strong>Цена:</strong> {{ ad.price }} руб.</p>
+        <p><strong>Продавец:</strong> {{ seller_name }}</p>
+        <p><strong>Телефон:</strong> {{ seller_phone }}</p>
+        <p><strong>Приватное:</strong> {{ 'Да' if ad.is_private else 'Нет' }}</p>
+        <h3>Описание:</h3>
+        <p>{{ ad.description }}</p>
+        <hr>
+        <p><a href="/ads/" class="btn btn-primary btn-small">Все объявления</a></p>
+    </div>
+</body>
+{% endblock %}

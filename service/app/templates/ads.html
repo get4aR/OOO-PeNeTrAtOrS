@@ -1,0 +1,26 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Объявления | AvitOff{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="start-container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <h1>Все объявления</h1>
+    </div>
+
+    <div class="ads-grid">
+        {% for ad in ads %}
+        <div class="ad-card">
+            <div class="ad-card-header">
+                <h3>{{ ad.header }}</h3>
+                <span class="ad-price">{{ ad.price }} ₽</span>
+            </div>
+            
+            <div class="ad-card-footer">
+                <a href="/ads/{{ ad.id }}/" class="btn btn-primary btn-small">Перейти к объявлению</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

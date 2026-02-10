@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AvitOff{% endblock %}</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <link rel="stylesheet" href="/static/welcome.css">
+    <link rel="stylesheet" href="/static/payload.css">
+    <link rel="stylesheet" href="/static/start.css">
+    <link rel="stylesheet" href="/static/ads.css">
+</head>
+<body class="body">
+    <nav class="navbar">
+        <a href="/" class="logo">AvitOff</a>
+
+        <div class="nav-links">
+            <div class="nav-left">
+                 {% if user %}
+                    <a href="/ads/" class="nav-link">Объявления</a>
+                    <a href="/upload/" class="nav-link">Подать объявление</a>
+                {% endif %}
+            </div>
+
+            <div class="nav-right">
+                 {% if user %}
+                    <a href="/profile/" class="nav-link"> {{ user.nickname }}</a> 
+                    <form method="post" action="/logout/" style="display:inline;">
+                        <button class="btn-logout btn-outline-danger" type="submit">Выйти</button>
+                    </form>
+                {% else %}
+                    <a href="/login/" class="nav-link">Вход</a>
+                    <a href="/register/" class="nav-link">Регистрация</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

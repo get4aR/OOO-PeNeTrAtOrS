@@ -1,0 +1,44 @@
+{% extends "dashboard.html" %}
+{% block title %}Профиль | AvitOff{% endblock %}
+
+{% block content %}
+<section class="info-container">
+    <h1 class="info-heading">Профиль пользователя</h1>
+
+    <div class="card">
+        <div class="card-title">Информация</div>
+        <p><strong>Никнейм:</strong> {{ user.nickname }}</p>
+        <p><strong>E-mail:</strong> {{ user.email }}</p>
+        <p><strong>Телефон:</strong> {{ user.phone }}</p>
+    </div>
+
+    <div class="start-container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <h1>Мои объявления</h1>
+    </div>
+
+    <div class="ads-grid">
+        {% for ad in ads %}
+        <div class="ad-card">
+            <div class="ad-card-header">
+                <h3>{{ ad.header }}</h3>
+                <span class="ad-price">{{ ad.price }} ₽</span>
+            </div>
+            
+            <div class="ad-card-footer">
+                <a href="/ads/{{ ad.id }}/" class="btn btn-primary btn-small">Перейти к объявлению</a>
+            
+                <form action="/ads/edit_privacy/{{ ad.id }}/" method="post">
+                    <button type="submit" class="btn-logout btn-outline-danger">
+                        {% if ad.is_private %}
+                        Сделать публичным
+                        {% else %}
+                        Сделать приватным
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
