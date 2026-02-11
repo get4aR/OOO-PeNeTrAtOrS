@@ -38,7 +38,7 @@ class User(Base):
 class Ads(Base):
     __tablename__ = 'ads'
     id = Column(Integer, primary_key=True, index=True)
-    seller = Column(Integer, ForeignKey('users.id'))
+    seller = Column(String, ForeignKey('users.email'))
     header = Column(String, nullable=False)
     description = Column(String, nullable=False)
     price = Column(Integer, nullable=False)

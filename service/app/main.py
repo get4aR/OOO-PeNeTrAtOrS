@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, Response, Depends, Form, HTTPException, status
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
@@ -118,7 +118,7 @@ def profile(request: Request, db: Session = Depends(get_db)):
     if isinstance(user, RedirectResponse):
         return user
 
-    ads = db.query(Ads).filter(Ads.seller == user.id).order_by(Ads.header).all()
+    ads = db.query(Ads).filter(Ads.seller == user.email).order_by(Ads.header).all()
 
     return templates.TemplateResponse("profile.html", {
         "request": request,
@@ -169,8 +169,8 @@ def upload(request: Request,
            user: User = Depends(get_current_user)):
     if not request.cookies.get("Authorization"):
         return RedirectResponse(url="/", status_code=302)
-    
-    new_ad = Ads(seller=user.id, header=header, description=description, price=price)
+    print(user)
+    new_ad = Ads(seller=user.email, header=header, description=description, price=price)
     db.add(new_ad)
     db.commit()
     db.refresh(new_ad)
@@ -183,10 +183,10 @@ def upload(request: Request,
 # Просмотр конкретного объявления
 @app.get("/ads/{ad_id}/", response_class=HTMLResponse)
 def view_ad(request: Request, ad_id: int, db: Session = Depends(get_db)):
-    if not request.cookies.get("Authorization"):
+    auth = request.cookies.get("Authorization")
+    if not auth:
         return RedirectResponse(url="/", status_code=302)
     
-    # Получаем объявление по ID без проверки приватности
     ad = db.query(Ads).filter(Ads.id == ad_id).first()
     
     if not ad:
@@ -196,8 +196,12 @@ def view_ad(request: Request, ad_id: int, db: Session = Depends(get_db)):
     if isinstance(user, RedirectResponse):
         return user
     
-    # Получаем продавца для отображения имени
-    seller = db.query(User).filter(User.id == ad.seller).first()
+    if ad.is_private:
+        print(f"DBG: {ad} {user}")
+        if user.email != ad.seller:
+            return HTMLResponse("You are not the owner!", status_code=405)
+
+    seller = db.query(User).filter(User.email == ad.seller).first()
     seller_name = seller.nickname
     seller_phone = seller.phone
     
@@ -208,7 +212,21 @@ def view_ad(request: Request, ad_id: int, db: Session = Depends(get_db)):
         "seller_phone": seller_phone,
         "ad": ad,
         "user": user,
+        "ad_id": ad.id,
     })
+
+@app.get("/ads/{ad_id}/contact_info", response_class=PlainTextResponse)
+def get_contact_info(request: Request, ad_id: int, db: Session = Depends(get_db)):
+    auth = request.cookies.get("Authorization")
+    if not auth:
+        return RedirectResponse(url="/", status_code=302)
+    
+    ad = db.query(Ads).filter(Ads.id == ad_id).first()
+
+    if not ad:
+        return HTMLResponse("Ad not found", status_code=404)
+    
+    return PlainTextResponse(ad.seller)
 
 
 # Изменить приватность
@@ -226,7 +244,7 @@ def edit_privacy(request: Request, ad_id: int, db: Session = Depends(get_db)):
     if not ad:
         raise HTTPException(status_code=404, detail="Ad not found")
     
-    if user.id == ad.seller:
+    if user.email == ad.seller:
         ad.is_private = not ad.is_private
         db.commit()
         return RedirectResponse(url="/profile/", status_code=302)

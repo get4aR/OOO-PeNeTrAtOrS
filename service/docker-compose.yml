@@ -16,6 +16,8 @@ services:
       - "${PORT}:8000"
     environment:
       DATABASE_URL: "postgresql://dbuser:dbpassword@AvitOffdb:5432/AvitOffdb"
+      PORT: 8080
+      SECRET_KEY: abouba
     depends_on:
       - AvitOffdb
     networks:
