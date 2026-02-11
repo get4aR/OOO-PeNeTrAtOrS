@@ -14,6 +14,31 @@
         <p>{{ ad.description }}</p>
         <hr>
         <p><a href="/ads/" class="btn btn-primary btn-small">Все объявления</a></p>
+        <p><a href="#" class="btn btn-secondary btn-small" id="contact-author-link">Связаться с автором (загрузка...)</a></p>
     </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const adId = "{{ ad.id }}";
+            const link = document.getElementById('contact-author-link');
+
+            fetch(`/ads/${adId}/contact_info`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(email => {
+                    const cleanEmail = email.trim();
+                    link.href = `mailto:${cleanEmail}`;
+                    link.textContent = 'Связаться с автором';
+                })
+                .catch(error => {
+                    console.error('Failed to load contact email:', error);
+                    link.textContent = 'Ошибка загрузки контакта';
+                    link.style.pointerEvents = 'none';
+                });
+        });
+    </script>
 </body>
 {% endblock %}

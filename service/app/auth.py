@@ -1,15 +1,17 @@
 from datetime import datetime, timedelta
+import os
 from fastapi import Depends, HTTPException, status, Request, Header
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from database import User, get_db
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt, ExpiredSignatureError # python-jose
+from jose.exceptions import JWKError
 from passlib.context import CryptContext
 
 
-SECRET_KEY = "secretkey"
-ALGORITHM = "HS256"
+SECRET_KEY = os.environ['SECRET_KEY']
+ALGORITHMS = ["HS256", "HS512"]
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Hashing algorithm for passwords
@@ -36,7 +38,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
         expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHMS[0])
     
     return encoded_jwt
 
@@ -51,8 +53,10 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
     
     try:
         token = token.split(" ")[1]
+        payload = jwt.get_unverified_claims(token)
+        if jwt.get_unverified_headers(token)['alg'] in ALGORITHMS:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHMS)
         
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         
         if email is None:
