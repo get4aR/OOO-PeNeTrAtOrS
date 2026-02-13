@@ -17,8 +17,8 @@ CHECKER_ERROR = 110
 
 
 SERVICENAME = "avitoff"
-PORT = int(os.environ.get("PORT", 8000))
-
+PORT = int(os.environ.get("PORT", 31337))
+fake = Faker()
 
 def close(code, public="", private=""):
     if public:
